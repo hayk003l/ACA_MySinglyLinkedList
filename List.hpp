@@ -6,15 +6,52 @@
 namespace myStl {
     template <typename T>
     struct Node {
-            T data;
-            Node<T>* next;
+       T data;
+       Node<T>* next;
     };
-    
+
+    template <typename T>
+    class InputIterator {
+    private:
+        myStl::Node<T>* _curr;
+    public:
+        InputIterator() : _curr(nullptr) {}
+        InputIterator(myStl::Node<T>* ptr) : _curr(ptr) {}
+        InputIterator(const InputIterator& otherIt) : _curr(otherIt._curr) {}
+        InputIterator<T>& operator=(const InputIterator& otherIt) {
+            _curr = otherIt._curr;
+            return *this;
+        }
+        bool operator==(const InputIterator& otherIt) {
+            return _curr == otherIt._curr;
+        }
+        bool operator!=(const InputIterator& otherIt) {
+            return _curr != otherIt._curr;
+        }
+        T& operator*() const {
+            return _curr->data;
+        }
+        InputIterator& operator++() {
+            _curr = _curr->next;
+            return *this;
+        }
+        InputIterator& operator++(int) {
+            InputIterator res(*this);
+            _curr = _curr->next;
+            return res;
+        }
+    };
+
+
     template <typename T>
     class List {
+    
     private:
+        
         Node<T>* _head = nullptr;
+    
     public:
+        
         List() : _head(nullptr) {}
         ~List() {
             Node<T>* tmp = _head;
@@ -25,7 +62,9 @@ namespace myStl {
             }
             
         }
+    
     public:
+        
         void push_front(const T& data) {
             Node<T>* temp = new Node<T>;
             temp->data = data;
@@ -154,6 +193,7 @@ namespace myStl {
             }
             return true;
         };
+
         void makeLoop() {
             Node<T>* tmp = _head;
             Node<T>* prevTemp = nullptr;
@@ -163,13 +203,28 @@ namespace myStl {
             }
             prevTemp -> next = _head;
         }
+
+        InputIterator<T> begin() {
+            return InputIterator<T>(_head);
+        }
+        InputIterator<T> end() {
+            return InputIterator<T>(0);
+        }
+        void print() {
+            for (InputIterator<T> it = begin(); it != end(); ++it ) {
+                std::cout << *it << " ";
+            }
+        }
     };
     
+
     template <typename T>
     void printNode(Node<T>* node) {
         std::cout << node -> data << std::endl;
     }
 
 };
+
+
 
 #endif // __LIST__

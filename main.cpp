@@ -11,15 +11,7 @@ int main() {
     obj.insert(2,2);
     obj.display();
     
-    if (!obj.detectLoop()) {
-        std::cout << "Cycle" << std::endl;
-    }
-    else {
-        std::cout << "Not a cycle" << std::endl;
-    }
-
-    obj.swapList();
-    obj.display();
-
+    obj.print();
+    
     return 0;
 }
